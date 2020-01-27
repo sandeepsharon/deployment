@@ -31,6 +31,7 @@ if [ $count -ne 0 ]; then
     mv $webapps/$i $backup_location/$current_date/
     rm -rf $webapps/$i
     cp -R $files/$i $webapps
+    chown -R tomcat.tomcat $webapps/$i
     sh /opt/tomcat/bin/startup.sh > /dev/null 2>&1
     echo -e "Backup of $i is taken"
     echo -e "${GREEN}Deployment of $i done${NC}"
