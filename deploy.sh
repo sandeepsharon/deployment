@@ -43,7 +43,7 @@ if [ $count -ne 0 ]; then
  done
 while true; do
     sleep 2
-    read -p "Do you wish to see tomcat logs? [y/n]" yn
+    read -p "Do you wish to see application console/live log? [y/n]" yn
     case $yn in
         [Yy]* ) tail -f /opt/tomcat/logs/catalina.out;;
         [Nn]* ) exit;;
