@@ -4,9 +4,9 @@ NC='\033[0m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
-domain_name=fibidev.ntu.edu.sg
-files=/root/list
-list=`ls /root/list`
+domain_name=www.example.com
+files=/home/arjun.chand/war
+list=`ls $files`
 webapps=/opt/tomcat/webapps
 backup_location=/opt/backup
 count=`echo $list | wc -w`
@@ -23,8 +23,8 @@ if [ $count -ne 0 ]; then
  for i in $list;
   do
    if [[ "$i" =~ ^(fibi_ntu|fibi4_ntu.war)$ ]]; then
-    sh /opt/tomcat/bin/shutdown.sh > /dev/null 2>&1
-    
+    systemctl stop tomcat > /dev/null 2>&1
+    sleep 4
     tomcat_shutdown
     mkdir -p $backup_location/$current_date
     rm -rf $backup_location/$current_date/$i    
@@ -32,7 +32,7 @@ if [ $count -ne 0 ]; then
     rm -rf $webapps/$i
     cp -R $files/$i $webapps
     chown -R tomcat.tomcat $webapps/$i
-    sh /opt/tomcat/bin/startup.sh > /dev/null 2>&1
+    systemctl start tomcat > /dev/null 2>&1
     echo -e "Backup of $i is taken"
     echo -e "${GREEN}Deployment of $i done${NC}"
    
