@@ -13,7 +13,7 @@ backup_location=/opt/backup
 count=`echo $list | wc -w`
 current_date=`echo "$(date +"%d-%m-%Y")"`
 #current_time=`echo "$(date +%H:%M:%S:%N)"`
-time=$(date +"%d_%m_%Y-%I:%M:%S:%p")
+time=$(date +"%d_%m_%Y-%T:%p")
 tomcat_shutdown() {
  process=`pstree -apu | grep "[D]java.util" | sed 's/[^0-9]*//g'`
  for j in $process; do kill -9 $j; done
