@@ -4,6 +4,7 @@ NC='\033[0m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
+flag=0
 domain_name=www.example.com
 files=/home/arjun.chand/war
 list=`ls $files`
@@ -32,15 +33,19 @@ if [ $count -ne 0 ]; then
     rm -rf $webapps/$i
     cp -R $files/$i $webapps
     chown -R tomcat.tomcat $webapps/$i
-    systemctl start tomcat > /dev/null 2>&1
+    #systemctl start tomcat > /dev/null 2>&1
     echo -e "Backup of $i is taken"
     echo -e "${GREEN}Deployment of $i done${NC}"
+    ((flag++))
    
    else
     echo -e "${RED}Illegal file $i cannot be deployed${NC}"
    fi
  sleep 1
  done
+  if [ $flag -gt 0 ]; then
+   systemctl start tomcat > /dev/null 2>&1
+  fi
 while true; do
     sleep 2
     read -p "Do you wish to see application console/live log? [y/n]" yn
