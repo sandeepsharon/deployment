@@ -14,7 +14,7 @@ current_date=`echo "$(date +"%d-%m-%Y")"`
 #current_time=`echo "$(date +%H:%M:%S:%N)"`
 time=$(date +"%d_%m_%Y-%I:%M:%p")
 tomcat_shutdown() {
- process=`pstree -apu | grep "[D]java.util" | awk '{print $2}' | cut -c8-`
+ process=`pstree -apu | grep "[D]java.util" | awk '{print $2}' | sed 's/[^0-9]*//g'`
  for j in $process; do kill -9 $j; done
 }
 if [ $count -ne 0 ]; then
