@@ -12,7 +12,7 @@ backup_location=/opt/backup
 count=`echo $list | wc -w`
 current_date=`echo "$(date +"%d-%m-%Y")"`
 #current_time=`echo "$(date +%H:%M:%S:%N)"`
-time=$(date +"%d_%m_%Y-%I:%M:%p")
+time=$(date +"%d_%m_%Y-%I:%M:%S:%p")
 tomcat_shutdown() {
  process=`pstree -apu | grep "[D]java.util" | awk '{print $2}' | sed 's/[^0-9]*//g'`
  for j in $process; do kill -9 $j; done
@@ -24,11 +24,11 @@ if [ $count -ne 0 ]; then
   do
    if [[ "$i" =~ ^(fibi_ntu|fibi4_ntu.war)$ ]]; then
     systemctl stop tomcat > /dev/null 2>&1
-    sleep 4
+    sleep 30
     tomcat_shutdown
     mkdir -p $backup_location/$current_date
-    rm -rf $backup_location/$current_date/$i    
-    mv $webapps/$i $backup_location/$current_date/
+    #rm -rf $backup_location/$current_date/$i    
+    mv $webapps/$i $backup_location/$current_date/${i}_$time
     rm -rf $webapps/$i
     cp -R $files/$i $webapps
     chown -R tomcat.tomcat $webapps/$i
