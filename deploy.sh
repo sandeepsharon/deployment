@@ -5,8 +5,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
 flag=0
-domain_name=www.example.com
-files=/home/arjun.chand/war
+domain_name=fibidev.ntu.edu.sg
+files=/home/arjun.chand/today/boomer
 list=`ls $files`
 webapps=/opt/tomcat/webapps
 backup_location=/opt/backup
@@ -23,21 +23,27 @@ if [ $count -ne 0 ]; then
  echo "Please wait ......"
  for i in $list;
   do
-   if [[ "$i" =~ ^(fibi_ntu|fibi4_ntu.war)$ ]]; then
+   if [[ "$i" =~ ^(fibi_ntu|fibi4_ntu.war|fibi-ntu.war|testfibi)$ ]]; then
     systemctl stop tomcat > /dev/null 2>&1
-    sleep 30
+    sleep 5
     tomcat_shutdown
     mkdir -p $backup_location/$current_date
-    #rm -rf $backup_location/$current_date/$i    
+    #rm -rf $backup_location/$current_date/$i
     mv $webapps/$i $backup_location/$current_date/${i}_$time
-    rm -rf $webapps/$i
+    if [ $i == "fibi4_ntu.war" ]; then
+     rm -rf $webapps/fibi4_ntu
+    fi
+    if [ $i == "fibi-ntu.war" ]; then
+     rm -rf $webapps/fibi-ntu
+    fi
+
     cp -R $files/$i $webapps
     chown -R tomcat.tomcat $webapps/$i
-    #systemctl start tomcat > /dev/null 2>&1
+    systemctl start tomcat > /dev/null 2>&1
     echo -e "Backup of $i is taken"
     echo -e "${GREEN}Deployment of $i done${NC}"
     ((flag++))
-   
+
    else
     echo -e "${RED}Illegal file $i cannot be deployed${NC}"
    fi
