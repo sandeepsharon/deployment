@@ -37,7 +37,6 @@ tomcat_shutdown() {
 }
 war_cut() {
  del=`echo "$i" | sed -e "s/$suffix$//"`
- echo $del
  rm -rf $webapps/$del
  }
 if [ $count -ne 0 ]; then
