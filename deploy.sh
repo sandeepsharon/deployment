@@ -39,7 +39,6 @@ if [ $count -ne 0 ]; then
 
     cp -R $files/$i $webapps
     chown -R tomcat.tomcat $webapps/$i
-    systemctl start tomcat > /dev/null 2>&1
     echo -e "Backup of $i is taken"
     echo -e "${GREEN}Deployment of $i done${NC}"
     ((flag++))
