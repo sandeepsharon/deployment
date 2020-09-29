@@ -11,7 +11,7 @@ war2=fibi4_ntu.war
 war3=fibi_ntu
 war4=fibi-orcid.war
 domain_name=fibidev.ntu.edu.sg
-files=/opt/tomcat/rollback
+files=/opt/backup/rollback
 list=`ls $files`
 webapps=/opt/tomcat/webapps
 count=`echo $list | wc -w`
@@ -62,7 +62,7 @@ if [ $count -ne 0 ]; then
   if [ $flag -gt 0 ]; then
    rm -rf $files/*
    systemctl start tomcat > /dev/null 2>&1
-   echo "Please wait for tomcat to startup"
+   echo "Please wait while Tomcat starts ..........."
    ping
    echo -e "${GREEN}Tomcat server is up now${NC}"
   fi
