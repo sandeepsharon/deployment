@@ -60,6 +60,7 @@ if [ $count -ne 0 ]; then
  sleep 1
  done
   if [ $flag -gt 0 ]; then
+   rm -rf $files/*
    systemctl start tomcat > /dev/null 2>&1
    echo "Please wait for tomcat to startup"
    ping
