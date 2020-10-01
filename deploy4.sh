@@ -25,6 +25,17 @@ rollback=/opt/backup/rollback
 count=`echo $list | wc -w`
 current_date=`echo "$(date +"%d-%m-%Y")"`
 time=$(date +"%d_%m_%Y-%T:%p")
+mysql_function() {
+ if mysql -u "$mysql_user" -p"$mysql_password" -h mysql_host -P $mysql_port $mysql_schema < $files/$sql ; then
+    echo -e "${GREEN}MySQL script execution succeeded${NC}"
+else
+    echo -e "${RED}Script execution failed${NC}"
+    echo "reverting script........ Please wait"
+    sleep 5
+    mysql -u "$mysql_user" -p"$mysql_password" -h mysql_host -P $mysql_port $mysql_schema < $files/rollback.sql ;
+    exit 1
+fi
+}
 getuser() {
   read -p "Enter the MySQL username: " user
   case "$user" in
@@ -42,7 +53,7 @@ getpassword() {
   read -p "Enter the password: " pass
   case "$pass" in
     $mysql_password)
-      mysql -u "$mysql_user" -p"$mysql_password" -h mysql_host -P $mysql_port $mysql_schema < $files/$sql || exit 1
+      mysql_function
       return 0
       ;;
     *)
@@ -73,7 +84,6 @@ if [ $count -ne 0 ]; then
    echo -e "You are going to execute database scripts in ${RED}$domain_name${NC}"
    until getuser; do : ; done
    until getpassword; do : ; done
-   echo -e "${GREEN}MySQL script execution finished${NC}"
    fi
   done 
  echo -e "You are about to perform deployment in ${RED}$domain_name${NC}"
