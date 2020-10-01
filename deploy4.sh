@@ -69,7 +69,7 @@ war_cut() {
 if [ $count -ne 0 ]; then
  for m in $list;
   do
-   if [[ "$m" =~ ^(all.sql)$ ]]; then
+   if [[ "$m" =~ ^($sql)$ ]]; then
    echo -e "You are going to execute database scripts in ${RED}$domain_name${NC}"
    until getuser; do : ; done
    until getpassword; do : ; done
