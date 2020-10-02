@@ -124,7 +124,7 @@ if [ $count -ne 0 ]; then
    fi
  sleep 1
  done
-  cp -R $files/revert.sql $rollback/
+  cp -R $files/rollback.sql $rollback/
   if [ $flag -gt 0 ]; then
    systemctl start tomcat > /dev/null 2>&1
    echo "Please wait while Tomcat starts ..........."
