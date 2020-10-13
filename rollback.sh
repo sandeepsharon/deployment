@@ -37,7 +37,7 @@ war_cut() {
 if [ $count -ne 0 ]; then
  echo -e "You are about to perform rollback in ${RED}$domain_name${NC}"
  echo "Please wait ......"
- mysql -u "$mysql_user" -p"$mysql_password" -h mysql_host -P $mysql_port $mysql_schema < $files/rollback.sql
+ mysql -u "$mysql_user" -p"$mysql_password" -h $mysql_host -P $mysql_port $mysql_schema < $files/rollback.sql
  for i in $list;
   do
    if [[ "$i" =~ ^($war1|$war2|$war3|$war4)$ ]]; then
