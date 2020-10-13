@@ -26,13 +26,13 @@ count=`echo $list | wc -w`
 current_date=`echo "$(date +"%d-%m-%Y")"`
 time=$(date +"%d_%m_%Y-%T:%p")
 mysql_function() {
- if mysql -u "$mysql_user" -p"$mysql_password" -h mysql_host -P $mysql_port $mysql_schema < $files/$sql ; then
+ if mysql -u "$mysql_user" -p"$mysql_password" -h $mysql_host -P $mysql_port $mysql_schema < $files/$sql ; then
     echo -e "${GREEN}MySQL script execution succeeded${NC}"
 else
     echo -e "${RED}Script execution failed${NC}"
     echo "reverting script........ Please wait"
     sleep 5
-    mysql -u "$mysql_user" -p"$mysql_password" -h mysql_host -P $mysql_port $mysql_schema < $files/rollback.sql ;
+    mysql -u "$mysql_user" -p"$mysql_password" -h $mysql_host -P $mysql_port $mysql_schema < $files/rollback.sql ;
     exit 1
 fi
 }
