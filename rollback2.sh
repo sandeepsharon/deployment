@@ -41,7 +41,7 @@ for m in $list;
  do
   if [[ "$m" =~ ^(all.sql)$ ]]; then
   echo -e "${GREEN}Reverting DB scripts Please wait..........${NC}"
-  mysql -u "$mysql_user" -p"$mysql_password" -h $mysql_host -P $mysql_port $mysql_schema < $files/dbrollbackscripts/all.sql
+  mysql -u "$mysql_user" -p"$mysql_password" -f -h $mysql_host -P $mysql_port $mysql_schema < $files/dbrollbackscripts/all.sql
   fi
  done 
  for i in $list;
