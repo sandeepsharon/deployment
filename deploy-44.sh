@@ -92,6 +92,7 @@ if [ $count -ne 0 ]; then
  for m in $list_home;
   do
    if [[ "$m" =~ ^($sql)$ ]]; then
+   cp -R $db_rollback_scripts $rollback/ 2>/dev/null
    echo -e "You are going to execute database scripts in ${RED}$domain_name${NC}"
    until getuser; do : ; done
    until getpassword; do : ; done
@@ -135,7 +136,7 @@ if [ $count -ne 0 ]; then
    fi
  sleep 1
  done
-  cp -R $db_rollback_scripts $rollback/ 2>/dev/null
+  
   rm -rf $files
   if [ $flag -gt 0 ]; then
    systemctl start tomcat > /dev/null 2>&1
