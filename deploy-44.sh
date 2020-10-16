@@ -81,6 +81,7 @@ war_cut() {
   sleep 5
  done
 }
+rm -rf $files
 mkdir -p $files
 cp -R $backend/* $files/ 2>/dev/null
 cp -R $frontend/* $files/ 2>/dev/null
