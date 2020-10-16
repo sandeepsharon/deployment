@@ -34,11 +34,9 @@ mysql_function() {
  if mysql -u "$mysql_user" -p"$mysql_password" -h $mysql_host -P $mysql_port $mysql_schema < $db_scripts/$sql ; then
     echo -e "${GREEN}MySQL script execution succeeded${NC}"
 else
-    echo -e "${RED}Script execution failed${NC}"
-    echo "reverting script........ Please wait"
-    rm -rf $rollback/*
-    sleep 5
-    mysql -u "$mysql_user" -p"$mysql_password" -f -h $mysql_host -P $mysql_port $mysql_schema < $db_rollback_scripts/$sql ;
+    echo -e "${RED}Script execution failed. Please contact POLUS${NC}"
+    
+#    rm -rf $rollback/*
     exit 1
 fi
 }
@@ -89,9 +87,17 @@ cp -R $frontend/* $files/ 2>/dev/null
 
 if [ $count -ne 0 ]; then
 
+ for k in $list;
+  do
+   if [[ "$k" =~ ^($war1|$war2|$war3|$war4)$ ]]; then
+   rm -rf $rollback/*
+   fi
+  done
+
  for m in $list_home;
   do
    if [[ "$m" =~ ^($sql)$ ]]; then
+   
    cp -R $db_rollback_scripts $rollback/ 2>/dev/null
    echo -e "You are going to execute database scripts in ${RED}$domain_name${NC}"
    until getuser; do : ; done
@@ -100,12 +106,7 @@ if [ $count -ne 0 ]; then
   done 
  echo -e "You are about to perform deployment in ${RED}$domain_name${NC}"
  echo "Please wait ......"
- for k in $list;
-  do
-   if [[ "$k" =~ ^($war1|$war2|$war3|$war4)$ ]]; then
-   rm -rf $rollback/*
-   fi
-  done 
+ 
  for i in $list;
   do
    if [[ "$i" =~ ^($war1|$war2|$war3|$war4)$ ]]; then
