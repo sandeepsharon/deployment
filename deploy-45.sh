@@ -12,13 +12,13 @@ war3=fibi_ntu
 war4=fibi-orcid.war
 domain_name=fibiuat.ntu.edu.sg
 files=/root/rise_temp
-backend=/home/arjun.chand/Release_Bundle_Fibi_RISE/Application_File/Backend_for_server_2
+backend=/root/rise_bundle/Release_Bundle_Fibi_RISE/Application_File/Backend_for_server_2
 frontend=/root/rise_bundle/Release_Bundle_Fibi_RISE/Application_File/Front_end
-list=`ls $files`
+#list=`ls $files`
 webapps=/opt/tomcat/webapps
 backup_location=/opt/backup
 rollback=/opt/backup/rollback
-count=`echo $list | wc -w`
+#count=`echo $list | wc -w`
 current_date=`echo "$(date +"%d-%m-%Y")"`
 time=$(date +"%d_%m_%Y-%T:%p")
 
@@ -39,6 +39,8 @@ war_cut() {
 mkdir -p $files
 cp -R $backend/* $files/ 2>/dev/null
 cp -R $frontend/* $files/ 2>/dev/null
+list=`ls $files`
+count=`echo $list | wc -w`
 
 if [ $count -ne 0 ]; then
  
