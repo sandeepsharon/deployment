@@ -20,14 +20,14 @@ domain_name=fibiuat.ntu.edu.sg
 files=/root/rise_temp
 db_scripts=/root/rise_bundle/Release_Bundle_Fibi_RISE/DB_Scripts
 db_rollback_scripts=/root/rise_bundle/Release_Bundle_Fibi_RISE/DB_Rollback_Script
-backend=/home/arjun.chand/Release_Bundle_Fibi_RISE/Application_File/Backend_for_server_1
+backend=/root/rise_bundle/Release_Bundle_Fibi_RISE/Application_File/Backend_for_server_1
 frontend=/root/rise_bundle/Release_Bundle_Fibi_RISE/Application_File/Front_end
-list=`ls $files`
+#list=`ls $files`
 list_home=`ls $db_scripts`
 webapps=/opt/tomcat/webapps
 backup_location=/opt/backup
 rollback=/opt/backup/rollback
-count=`echo $list | wc -w`
+#count=`echo $list | wc -w`
 current_date=`echo "$(date +"%d-%m-%Y")"`
 time=$(date +"%d_%m_%Y-%T:%p")
 mysql_function() {
@@ -81,10 +81,12 @@ war_cut() {
   sleep 5
  done
 }
-rm -rf $files
+rm -rf $files/*
 mkdir -p $files
 cp -R $backend/* $files/ 2>/dev/null
 cp -R $frontend/* $files/ 2>/dev/null
+list=`ls $files`
+count=`echo $list | wc -w`
 
 if [ $count -ne 0 ]; then
 
