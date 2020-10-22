@@ -7,16 +7,16 @@ WHITE='\033[1;37m'
 suffix=.war
 sql=all.sql
 flag=0
-mysql_user=Riseappu
-mysql_password='R1$e@ppu-LJUisRhzHQipvxrOVf29'
+mysql_user=Riseappp
+mysql_password='R1$e@ppp-OTMlH4GHKdrS2JoTpcRj'
 mysql_host=127.0.0.1
 mysql_port=6446
-mysql_schema=rise_uat
+mysql_schema=rise_prod
 war1=fibi-ntu.war
 war2=fibi4_ntu.war
 war3=fibi_ntu
 war4=fibi-orcid.war
-domain_name=fibiuat.ntu.edu.sg
+domain_name=fibi.ntu.edu.sg
 files=/root/rise_temp
 db_scripts=/root/rise_bundle/DB_Scripts
 db_rollback_scripts=/root/rise_bundle/DB_Rollback_Script
@@ -31,6 +31,7 @@ rollback=/opt/backup/rollback
 current_date=`echo "$(date +"%d-%m-%Y")"`
 time=$(date +"%d_%m_%Y-%T:%p")
 mysql_function() {
+ cd $db_scripts
  if mysql -u "$mysql_user" -p"$mysql_password" -h $mysql_host -P $mysql_port $mysql_schema < $db_scripts/$sql ; then
     echo -e "${GREEN}MySQL script execution succeeded${NC}"
 else
