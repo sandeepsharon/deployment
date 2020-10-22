@@ -42,6 +42,7 @@ for m in $list;
  do
   if [[ "$m" =~ ^($sql)$ ]]; then
   echo -e "${GREEN}Reverting DB scripts Please wait..........${NC}"
+  cd $files/$sql
   mysql -u "$mysql_user" -p"$mysql_password" -f -h $mysql_host -P $mysql_port $mysql_schema < $files/$sql/all.sql
   fi
  done 
