@@ -6,16 +6,16 @@ YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
 suffix=.war
 flag=0
-mysql_user=Riseappu
-mysql_password='R1$e@ppu-LJUisRhzHQipvxrOVf29'
+mysql_user=Riseappp
+mysql_password='R1$e@ppp-OTMlH4GHKdrS2JoTpcRj'
 mysql_host=127.0.0.1
 mysql_port=6446
-mysql_schema=rise_uat
+mysql_schema=rise_prod
 war1=fibi-ntu.war
 war2=fibi4_ntu.war
 war3=fibi_ntu
 war4=fibi-orcid.war
-domain_name=fibiuat.ntu.edu.sg
+domain_name=fibi.ntu.edu.sg
 files=/opt/backup/rollback
 sql=DB_Rollback_Script
 db_rollback_scripts=$files/DB_Rollback_Script
@@ -68,8 +68,8 @@ for m in $list;
     echo -e "${GREEN}Rollback of $i done${NC}"
     ((flag++))
 
-   else
-    echo -e "${RED}Illegal file $i cannot be rolledback${NC}"
+#   else
+#    echo -e "${RED}Illegal file $i cannot be rolledback${NC}"
    fi
  sleep 1
  done
