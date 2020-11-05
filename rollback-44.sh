@@ -7,7 +7,7 @@ WHITE='\033[1;37m'
 suffix=.war
 flag=0
 mysql_user=Riseappp
-mysql_password='R1$e@ppp-OTMlH4GHKdrS2JoTpcRj'
+mysql_hash=`cat /root/.secret.lck`
 mysql_host=127.0.0.1
 mysql_port=6446
 mysql_schema=rise_prod
@@ -22,6 +22,38 @@ db_rollback_scripts=$files/DB_Rollback_Script
 list=`ls $files`
 webapps=/opt/tomcat/webapps
 count=`echo $list | wc -w`
+mysql_function() {
+ cd $files/$sql
+ mysql -u "$mysql_user" -p"$pass" -f -h $mysql_host -P $mysql_port $mysql_schema < $files/$sql/all.sql
+
+}
+getuser() {
+  read -p "Enter the MySQL username: " user
+  case "$user" in
+    $mysql_user)
+      sleep 1
+      return 0
+      ;;
+    *)
+      echo -e "${RED}INCORRECT USERNAME. Please try again${NC}"
+      return 1
+      ;;
+  esac
+}
+getpassword() {
+  read -s -p "Enter the password: " pass
+  value=`echo $pass | openssl enc -base64 -e -aes-256-cbc -nosalt -pbkdf2  -pass pass:garbageKey`
+  case "$value" in
+    $mysql_hash)
+      mysql_function
+      return 0
+      ;;
+    *)
+      echo -e "${RED}INCORRECT PASSWORD. Please try again${NC}"
+      return 1
+      ;;
+  esac
+}
 tomcat_shutdown() {
  process=`pstree -apu | grep "[D]java.util" | sed 's/[^0-9]*//g'`
  for j in $process; do kill -9 $j; done
@@ -41,18 +73,19 @@ if [ $count -ne 0 ]; then
 for m in $list;
  do
   if [[ "$m" =~ ^($sql)$ ]]; then
-  echo -e "${GREEN}Reverting DB scripts Please wait..........${NC}"
-  cd $files/$sql
-  mysql -u "$mysql_user" -p"$mysql_password" -f -h $mysql_host -P $mysql_port $mysql_schema < $files/$sql/all.sql
+  echo -e "${GREEN}Reverting DB scripts${NC}"
+  until getuser; do : ; done
+  until getpassword; do : ; done
+  echo -e "${GREEN}Done${NC}"
   fi
- done 
+ done
  for i in $list;
   do
    if [[ "$i" =~ ^($war1|$war2|$war3|$war4)$ ]]; then
     systemctl stop tomcat > /dev/null 2>&1
     sleep 5
     tomcat_shutdown
-    rm -rf $webapps/$i 
+    rm -rf $webapps/$i
     if [ $i == $war2 ]; then
      war_cut
     fi
