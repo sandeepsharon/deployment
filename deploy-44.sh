@@ -8,7 +8,7 @@ suffix=.war
 sql=all.sql
 flag=0
 mysql_user=Riseappp
-mysql_password='R1$e@ppp-OTMlH4GHKdrS2JoTpcRj'
+mysql_hash=`cat /root/.secret.lck`
 mysql_host=127.0.0.1
 mysql_port=6446
 mysql_schema=rise_prod
@@ -32,11 +32,11 @@ current_date=`echo "$(date +"%d-%m-%Y")"`
 time=$(date +"%d_%m_%Y-%T:%p")
 mysql_function() {
  cd $db_scripts
- if mysql -u "$mysql_user" -p"$mysql_password" -h $mysql_host -P $mysql_port $mysql_schema < $db_scripts/$sql ; then
+ if mysql -u "$mysql_user" -p"$pass" -h $mysql_host -P $mysql_port $mysql_schema < $db_scripts/$sql ; then
     echo -e "${GREEN}MySQL script execution succeeded${NC}"
 else
     echo -e "${RED}Script execution failed. Please contact POLUS${NC}"
-    
+
 #    rm -rf $rollback/*
     exit 1
 fi
@@ -55,9 +55,10 @@ getuser() {
   esac
 }
 getpassword() {
-  read -p "Enter the password: " pass
-  case "$pass" in
-    $mysql_password)
+  read -s -p "Enter the password: " pass
+  value=`echo $pass | openssl enc -base64 -e -aes-256-cbc -nosalt -pbkdf2  -pass pass:garbageKey`
+  case "$value" in
+    $mysql_hash)
       mysql_function
       return 0
       ;;
@@ -101,16 +102,16 @@ if [ $count -ne 0 ]; then
  for m in $list_home;
   do
    if [[ "$m" =~ ^($sql)$ ]]; then
-   
+
    cp -R $db_rollback_scripts $rollback/ 2>/dev/null
    echo -e "You are going to execute database scripts in ${RED}$domain_name${NC}"
    until getuser; do : ; done
    until getpassword; do : ; done
    fi
-  done 
+  done
  echo -e "You are about to perform deployment in ${RED}$domain_name${NC}"
  echo "Please wait ......"
- 
+
  for i in $list;
   do
    if [[ "$i" =~ ^($war1|$war2|$war3|$war4)$ ]]; then
@@ -141,7 +142,7 @@ if [ $count -ne 0 ]; then
    fi
  sleep 1
  done
-  
+
   rm -rf $files
   if [ $flag -gt 0 ]; then
    systemctl start tomcat > /dev/null 2>&1
