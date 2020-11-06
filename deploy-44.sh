@@ -55,8 +55,11 @@ getuser() {
   esac
 }
 getpassword() {
-  read -s -p "Enter the password: " pass
-  value=`echo $pass | openssl enc -base64 -e -aes-256-cbc -nosalt -pbkdf2  -pass pass:garbageKey`
+  read -s -p "Enter MySQL password: " pass
+  echo ""
+  read -s -p "Enter the private key: " pass_key
+  echo ""
+  value=`echo $pass | openssl enc -base64 -e -aes-256-cbc -nosalt -pbkdf2  -pass pass:$pass_key`
   case "$value" in
     $mysql_hash)
       mysql_function
