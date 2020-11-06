@@ -41,8 +41,11 @@ getuser() {
   esac
 }
 getpassword() {
-  read -s -p "Enter the password: " pass
-  value=`echo $pass | openssl enc -base64 -e -aes-256-cbc -nosalt -pbkdf2  -pass pass:garbageKey`
+  read -s -p "Enter MySQL password: " pass
+  echo ""
+  read -s -p "Enter the private key: " pass_key
+  echo ""
+  value=`echo $pass | openssl enc -base64 -e -aes-256-cbc -nosalt -pbkdf2  -pass pass:$pass_key`
   case "$value" in
     $mysql_hash)
       mysql_function
@@ -116,6 +119,7 @@ for m in $list;
   fi
 while true; do
     sleep 3
+    rm -rf $files/*
     read -p "Do you wish to see application console/live log? [y/n]" yn
     case $yn in
         [Yy]* ) tail -f /opt/tomcat/logs/catalina.out;;
